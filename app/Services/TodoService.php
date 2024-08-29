@@ -35,14 +35,20 @@ class TodoService
     }
 
     public function updateTodo($id, TodoDTO $todoDTO)
-    {
-        return $this->todoRepository->update($id, [
-            'title' => $todoDTO->title,
-            'content' => $todoDTO->content,
-            'isFavorite' => $todoDTO->isFavorite,
-            'color' => $todoDTO->color,
-        ]);
-    }
+{
+    // Filtra os valores null
+    $data = array_filter([
+        'title' => $todoDTO->title,
+        'content' => $todoDTO->content,
+        'isFavorite' => $todoDTO->isFavorite,
+        'color' => $todoDTO->color,
+    ], function ($value) {
+        return !is_null($value);
+    });
+
+    return $this->todoRepository->update($id, $data);
+}
+
 
     public function deleteTodo($id)
     {
