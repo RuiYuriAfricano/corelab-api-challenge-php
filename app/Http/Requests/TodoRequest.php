@@ -10,23 +10,30 @@ class TodoRequest extends FormRequest
 {
     public function authorize()
     {
-        // Autoriza todos os usuários a fazer esta requisição. Altere conforme necessário.
         return true;
     }
 
     public function rules()
     {
-        return [
+        // Regras de validação para o método `store` (campos obrigatórios)
+        $rules = [
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'isFavorite' => 'boolean',
             'color' => 'string|regex:/^#[0-9A-Fa-f]{6}$/',
         ];
+
+        // Para o método `update`, os campos são opcionais
+        if ($this->isMethod('patch') || $this->isMethod('put')) {
+            $rules['title'] = 'nullable|string|max:255';
+            $rules['content'] = 'nullable|string';
+        }
+
+        return $rules;
     }
 
     protected function failedValidation(Validator $validator)
     {
-        // Lança uma exceção com os erros de validação em formato JSON
         throw new HttpResponseException(
             response()->json([
                 'success' => false,
