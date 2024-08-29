@@ -33,4 +33,17 @@ class TodoRepository
         $todo = $this->find($id);
         $todo->delete();
     }
+
+    public function restore($id)
+    {
+        $todo = Todo::onlyTrashed()->findOrFail($id);
+        $todo->restore();
+        return $todo;
+    }
+
+    public function forceDelete($id)
+    {
+        $todo = Todo::onlyTrashed()->findOrFail($id);
+        $todo->forceDelete();
+    }
 }
