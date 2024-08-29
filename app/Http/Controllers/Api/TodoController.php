@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Services\TodoService;
 use App\DTOs\TodoDTO;
-use Illuminate\Http\Request;
+use App\Http\Requests\TodoRequest;
 
 class TodoController extends Controller
 {
@@ -26,7 +26,7 @@ class TodoController extends Controller
         return response()->json($this->todoService->getTodoById($id), 200);
     }
 
-    public function store(Request $request)
+    public function store(TodoRequest $request)
     {
         $dto = new TodoDTO(
             $request->input('title'),
@@ -37,10 +37,14 @@ class TodoController extends Controller
 
         $todo = $this->todoService->createTodo($dto);
 
-        return response()->json($todo, 201);
+        return response()->json([
+            'success' => true,
+            'message' => 'Todo created successfully',
+            'data' => $todo
+        ], 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(TodoRequest $request, $id)
     {
         $dto = new TodoDTO(
             $request->input('title'),
@@ -51,7 +55,11 @@ class TodoController extends Controller
 
         $todo = $this->todoService->updateTodo($id, $dto);
 
-        return response()->json($todo, 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'Todo updated successfully',
+            'data' => $todo
+        ], 200);
     }
 
     public function destroy($id)
