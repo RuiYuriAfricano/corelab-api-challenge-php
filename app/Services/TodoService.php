@@ -35,8 +35,8 @@ class TodoService
     }
 
     public function updateTodo($id, TodoDTO $todoDTO)
-{
-    // Filtra os valores null
+    {
+    
     $data = array_filter([
         'title' => $todoDTO->title,
         'content' => $todoDTO->content,
@@ -47,7 +47,7 @@ class TodoService
     });
 
     return $this->todoRepository->update($id, $data);
-}
+    }
 
 
     public function deleteTodo($id)
