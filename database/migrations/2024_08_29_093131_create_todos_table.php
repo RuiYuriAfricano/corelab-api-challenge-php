@@ -17,6 +17,7 @@ return new class extends Migration
         $table->text('content');
         $table->boolean('isFavorite')->default(false);
         $table->string('color')->default('#FFF');
+        $table->softDeletes();
         $table->timestamps();
     });
 }
